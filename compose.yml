@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    ports:
+      - "4566:4566"  # エッジポート（すべてのAWSサービスに共通のポート）
+      - "4572:4572"  # S3サービスのポート（古いバージョンでは使用されていました）
+    environment:
+      - SERVICES=secretsmanager
+      - DEBUG=1
+    volumes:
+      - "./localstack:/var/lib/localstack"
+  app:
+    image: golang:1.22
+    volumes:
+      - type: bind
+        source: ./src
+        target: /src/app
+    working_dir: /src/app
+    tty: true

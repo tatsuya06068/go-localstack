@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package example;
+option go_package = "go-localstack/";
+
+import "google/api/annotations.proto";
+
+// サービスを定義します
+service ExampleService {
+    // gRPCメソッドを定義します
+    rpc GetExample(GetExampleRequest) returns (GetExampleResponse) {
+        option (google.api.http) = {
+            get: "/v1/example/{id}"
+        };
+    }
+
+    // Insert用のgRPCメソッドを定義します
+    rpc InsertExample(InsertExampleRequest) returns (InsertExampleResponse) {
+        option (google.api.http) = {
+            post: "/v1/example"
+            body: "*"
+        };
+    }
+}
+
+// リクエストメッセージを定義します
+message GetExampleRequest {
+    string id = 1; // IDを指定するフィールド
+}
+
+message GetExampleResponse {
+    string message = 1; // メッセージを含むフィールド
+}
+
+// Insert用のリクエストメッセージを定義します
+message InsertExampleRequest {
+    string message = 1; // 挿入するメッセージを指定するフィールド
+}
+
+// Insert用のレスポンスメッセージを定義します
+message InsertExampleResponse {
+    bool success = 1; // 挿入が成功したかどうかを示すフィールド
+}
